@@ -1,15 +1,20 @@
 <link rel="import" href="bower_components/polymer/polymer.html">
 <script type="text/javascript" src="bower_components/moment/moment.js"></script>
-<dom-module id="dom-element">
-
+<dom-module id="polymer-moment">
   <template>
-    <p>I'm a DOM element. This is my local DOM!</p>
+    <span>{{moment}}</span>
   </template>
-
   <script>
-    Polymer({
-      is: "dom-element"
-    });
+	Polymer({
+		is: "polymer-moment",
+		moment: {
+			type: String,
+			value: ''
+		},
+		ready: function(){
+			this.moment = moment("20111031", "YYYYMMDD").fromNow();
+		}
+	});
   </script>
 
 </dom-module>
