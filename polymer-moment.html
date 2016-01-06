@@ -3,6 +3,11 @@
 <dom-module id="polymer-moment">
   <template>
     <span>{{moment}}</span>
+    <span style="display:none;">
+    <span>{{value}}</span>
+    <span>{{inputFormat}}</span>
+    <span>{{format}}</span>
+    </span>
   </template>
   <script>
 	Polymer({
@@ -12,7 +17,15 @@
 			value: ''
 		},
 		ready: function(){
-			this.moment = moment("20111031", "YYYYMMDD").fromNow();
+			this.update();
+		},
+		update:function(){
+			var m;
+			if(typeof(this.inputFormat) == 'string')	m = moment(this.value,this.inputFormat);
+			else										m = moment(this.value);
+
+			if(typeof(this.format) == 'string')	this.moment = m.format(this.format);
+			else 								this.moment = m.fromNow();
 		}
 	});
   </script>
