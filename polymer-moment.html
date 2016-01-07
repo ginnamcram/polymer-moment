@@ -5,6 +5,29 @@
     <span>{{moment}}</span>
   </template>
   <script>
+  	/** Moment extension **/
+  	(function(moment){
+  		'use strict';
+  		moment.worker = {
+	  		delay: 1000,
+	  		start: function(){
+	  			if(this._timer) return;
+	  			this._timer = setInterval(function(){
+	  				var list = document.getElementsByTagName('polymer-moment');
+	  				for (var i = 0; i < list.length; i++) {
+	  					//update only if no format available
+	  					if( !list[i].format )
+	  						list[i].update();
+	  				};
+	  			}, this.delay);
+	  		},
+	  		stop: function(){
+	  			clearInterval(this._timer);
+	  			this._timer = false;
+	  		}
+	  	};
+  	})(moment);
+
 	Polymer({
 		is: "polymer-moment",
 		properties: {
@@ -15,7 +38,6 @@
 			},
 			value: {
 				type: String,
-				value: '',
       			notify: false
 			},
 			inputFormat: {
