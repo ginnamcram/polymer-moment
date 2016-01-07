@@ -1,6 +1,7 @@
 {
   "name": "polymer-moment",
-  "version": "0.1",
+  "private": true,
+  "version": "1.0",
   "dependencies": {
     "moment": "~2.11.0",
     "polymer": "Polymer/polymer#1.2.0"
