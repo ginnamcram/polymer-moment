@@ -3,29 +3,40 @@
 <dom-module id="polymer-moment">
   <template>
     <span>{{moment}}</span>
-    <span style="display:none;">
-    <span>{{value}}</span>
-    <span>{{inputFormat}}</span>
-    <span>{{format}}</span>
-    </span>
   </template>
   <script>
 	Polymer({
 		is: "polymer-moment",
-		moment: {
-			type: String,
-			value: ''
-		},
+		properties: {
+			moment: {
+				type: String,
+				value: '',
+      			notify: true
+			},
+			value: {
+				type: String,
+				value: '',
+      			notify: false
+			},
+			inputFormat: {
+				type: String,
+				value: '',
+      			notify: false
+			},
+			format: {
+				type: String,
+      			notify: false
+			}
+  		},
 		ready: function(){
+			this._moment = null;
+			if(typeof(this.inputFormat) == 'string')	this._moment = moment(this.value,this.inputFormat);
+			else										this._moment = moment(this.value);
 			this.update();
 		},
 		update:function(){
-			var m;
-			if(typeof(this.inputFormat) == 'string')	m = moment(this.value,this.inputFormat);
-			else										m = moment(this.value);
-
-			if(typeof(this.format) == 'string')	this.moment = m.format(this.format);
-			else 								this.moment = m.fromNow();
+			if(typeof(this.format) == 'string')	this.moment = this._moment.format(this.format);
+			else 								this.moment = this._moment.fromNow();
 		}
 	});
   </script>
