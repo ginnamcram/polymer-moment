@@ -1,5 +1,6 @@
 <link rel="import" href="bower_components/polymer/polymer.html">
-<script type="text/javascript" src="bower_components/moment/moment.js"></script>
+<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/moment/locale/de.js"></script>
 <dom-module id="polymer-moment">
   <template>
     <span>{{moment}}</span>
@@ -9,7 +10,7 @@
   	(function(moment){
   		'use strict';
   		moment.worker = {
-	  		delay: 1000,
+	  		delay: 60000, //1min
 	  		start: function(){
 	  			if(this._timer) return;
 	  			this._timer = setInterval(function(){
@@ -51,9 +52,13 @@
 			}
   		},
 		ready: function(){
+			//start worker
+			moment.worker.start();
+
 			this._moment = null;
 			if(typeof(this.inputFormat) == 'string')	this._moment = moment(this.value,this.inputFormat);
 			else										this._moment = moment(this.value);
+
 			this.update();
 		},
 		update:function(){

@@ -4,11 +4,22 @@
     <link rel="import" href="polymer-moment.html">
   </head>
   <body>
+    <script type="text/javascript">
+      moment.locale('de'); 
+    </script>
   	<p>
     	30122015 als MMMM Do YYYY, h:mm:ss a: <b><polymer-moment value="30122015" input-format="DDMMYYYY" format="MMMM Do YYYY, h:mm:ss a"></polymer-moment></b>
     </p>
     <p>
+      30122015 mit kurzschreibweise LL: <b><polymer-moment value="30122015" input-format="DDMMYYYY" format="LL"></polymer-moment></b>
+    </p>
+    <p>
+      30122015 als Unix Zeitstempel: <b><polymer-moment value="1451430000" input-format="X" format="L"></polymer-moment></b>
+    </p>
+    <p>
     	30122015 vergangene Zeit: <b><polymer-moment value="30122015" input-format="DDMMYYYY"></polymer-moment></b>
+      <p>
+      vergangene Zeit (autoupdate): <b><polymer-moment></polymer-moment></b>
 	</p>
   </body>
 </html>
