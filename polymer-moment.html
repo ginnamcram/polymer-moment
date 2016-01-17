@@ -12,20 +12,53 @@
 	  		delay: 60000, //1min
 	  		start: function(){
 	  			if(this._timer) return;
-	  			this._timer = setInterval(function(){
-	  				var list = document.getElementsByTagName('polymer-moment');
-	  				for (var i = 0; i < list.length; i++) {
-	  					//update only if no format available
-	  					if( !list[i].format )
-	  						list[i].update();
-	  				};
-	  			}, this.delay);
+	  			this._timer = setInterval(this.update, this.delay);
+	  		},
+	  		update: function(){
+	  			var list = document.getElementsByTagName('polymer-moment');
+  				for (var i = 0; i < list.length; i++) {
+  					//update only if no format available
+  					if( !list[i].format )
+  						list[i].update();
+  				};
 	  		},
 	  		stop: function(){
 	  			clearInterval(this._timer);
 	  			this._timer = false;
 	  		}
 	  	};
+	  	// add a eventlister to stop/start worker if browser window lost/regain focus
+        var hidden, visibilityState, visibilityChange;
+        if (typeof document.hidden !== "undefined") {
+            hidden = "hidden", visibilityChange = "visibilitychange", visibilityState = "visibilityState";
+        }
+        else if (typeof document.mozHidden !== "undefined") {
+            hidden = "mozHidden", visibilityChange = "mozvisibilitychange", visibilityState = "mozVisibilityState";
+        }
+        else if (typeof document.msHidden !== "undefined") {
+            hidden = "msHidden", visibilityChange = "msvisibilitychange", visibilityState = "msVisibilityState";
+        }
+        else if (typeof document.webkitHidden !== "undefined") {
+            hidden = "webkitHidden", visibilityChange = "webkitvisibilitychange", visibilityState = "webkitVisibilityState";
+        }
+        if (typeof document.addEventListener === "undefined" || typeof hidden === "undefined") {
+            // not supported
+        }
+        else{
+            document.addEventListener(visibilityChange, function() {
+                switch (document[visibilityState]) {
+                case "visible":
+                    // browser window is visible actualize and activate worker
+                    moment.worker.update();
+                    moment.worker.start();
+                    break;
+                case "hidden":
+                    // browser window is hidden stop worker
+                    moment.worker.stop();
+                    break;
+                }
+            }, false);
+        }
   	})(moment);
 
 	Polymer({
