@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>polymer-moment tests</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <script src="../../webcomponentsjs/webcomponents.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <link href="../polymer-moment.html" rel="import">
+</head>
+<body>
+	<script type="text/javascript">
+      moment.locale('de'); 
+    </script>
+	<polymer-moment id="default" value="30122015" input-format="DDMMYYYY" format="MMMM Do YYYY, h:mm:ss a"></polymer-moment>
+	<polymer-moment id="short" value="30122015" input-format="DDMMYYYY" format="LL"></polymer-moment>
+	<polymer-moment id="elapsed" value="30122015" input-format="DDMMYYYY"></polymer-moment>
+	<polymer-moment id="autoupdate"></polymer-moment>
+  <script>
+
+  function toRegexTest(str){
+  	return new RegExp(str.replace('.',function(special){
+  		return '\\' + special;
+  	}));
+  }
+
+  test('predefined value with input format and output format', function() {
+    var node = document.getElementById('default');
+    assert.match(
+    	node.textContent,
+    	toRegexTest( moment('30122015','DDMMYYYY').format('MMMM Do YYYY, h:mm:ss a') ) );
+  });
+
+  test('predefined value and shortcut output format', function() {
+    var node = document.getElementById('short');
+    assert.match(
+    	node.textContent,
+    	toRegexTest( moment('30122015', 'DDMMYYYY').format('LL') ) );
+  });
+  test('show time elapsed since moment', function() {
+    var node = document.getElementById('elapsed');
+	assert.match(
+		node.textContent,
+		toRegexTest( moment('30122015', 'DDMMYYYY').fromNow() ) );
+  });
+  test('autoupdate moment elements', function(done) {
+    var node = document.getElementById('autoupdate');
+    var currentValue = node.textContent;
+	assert.match(
+		currentValue,
+		toRegexTest( moment().fromNow() ), 'matches for a few seconds string' );
+
+	//wait a minute for update
+	this.timeout(1000*60+500);
+	setTimeout(function(){
+		assert.notEqual(node.textContent, currentValue);
+		done();
+	},1000*60+100);
+  });
+
+  </script>
+
+</body>
+</html>
