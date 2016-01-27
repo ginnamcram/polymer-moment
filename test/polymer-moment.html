@@ -11,7 +11,8 @@
 </head>
 <body>
 	<script type="text/javascript">
-      moment.locale('de'); 
+      moment.locale('de');
+      moment.worker.ignoreFocus = true;
     </script>
 	<polymer-moment id="default" value="30122015" input-format="DDMMYYYY" format="MMMM Do YYYY, h:mm:ss a"></polymer-moment>
 	<polymer-moment id="short" value="30122015" input-format="DDMMYYYY" format="LL"></polymer-moment>
@@ -52,11 +53,11 @@
 		toRegexTest( moment().fromNow() ), 'matches for a few seconds string' );
 
 	//wait a minute for update
-	this.timeout(1000*60+500);
+	this.timeout(1000*60+1000);
 	setTimeout(function(){
 		assert.notEqual(node.textContent, currentValue);
 		done();
-	},1000*60+100);
+	},1000*60+200);
   });
 
   </script>

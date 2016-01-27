@@ -9,7 +9,8 @@
   	(function(moment){
   		'use strict';
   		moment.worker = {
-	  		delay: 60000, //1min
+        ignoreFocus  : false, //true ignores the focus lost event and dosent stop the worker
+	  		delay        : 60000, //1min
 	  		start: function(){
 	  			if(this._timer) return;
 	  			this._timer = setInterval(this.update, this.delay);
@@ -54,6 +55,7 @@
                     break;
                 case "hidden":
                     // browser window is hidden stop worker
+                    if(moment.worker.ignoreFocus) break;
                     moment.worker.stop();
                     break;
                 }
